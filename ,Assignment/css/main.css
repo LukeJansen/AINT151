@@ -1,0 +1,34 @@
+body{
+  background-color: grey;
+  color: white;
+}
+
+h3{
+  text-align: center;
+}
+
+p{
+  text-align: center;
+}
+
+#main{
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
+
+#roomChoices{
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  border: 3px solid red;
+  height: 20px;
+}
+
+#b0{
+  float: left;
+}
+
+#b1{
+  float: right;
+}

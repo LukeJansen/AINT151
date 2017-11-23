@@ -15,7 +15,7 @@ function SelectRoom(roomIndex)
 	text.innerHTML = roomArray[roomIndex].text;
 
 	for (var i = 0; i < roomArray[roomIndex].choices.length; i++ ){
-		var tag = "<button type = 'button' onclick = " + "SelectRoom(" + roomArray[roomIndex].choices[i].index + ")" + ">" + roomArray[roomIndex].choices[i].text + "</button>";
+		var tag = "<button type = 'button' onclick = '" + "SelectRoom(" + roomArray[roomIndex].choices[i].index + ")'" + " id = 'b" + (i % 2) + "'>" + roomArray[roomIndex].choices[i].text + "</button>";
 		choices.innerHTML += tag;
 	}
 }
