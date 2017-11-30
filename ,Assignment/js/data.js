@@ -1,4 +1,5 @@
 var inventory = []
+var health = 100
 var lastRoom = 0
 
 var roomArray = [
@@ -32,7 +33,7 @@ var roomArray = [
 	},
 	{
 		title:'Room 3',
-		text:'You go through the door.',
+		text:'You try the key on the door. It unlocks and you go through the door. <br> Through the door you see a long corridor.',
 		choices:[
 			{
 				text:'Go to room 2',
