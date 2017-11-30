@@ -1,5 +1,4 @@
 var inventory = []
-var health = 100
 var lastRoom = 0
 
 var roomArray = [
