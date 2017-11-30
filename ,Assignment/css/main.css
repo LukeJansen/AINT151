@@ -17,6 +17,11 @@ p{
   padding: 10px;
 }
 
+#inventory{
+  float: right;
+  position:absolute;
+}
+
 #roomChoices{
   margin: auto;
   width: 50%;
