@@ -31,7 +31,7 @@ var roomArray = [
 		requirement:""
 	},
 	{
-		title:'Room 3',
+		title:'Room 2',
 		text:'You try the key on the door. It unlocks and you go through the door. <br> Through the door you see a long corridor.',
 		choices:[
 			{
