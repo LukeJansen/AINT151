@@ -33,8 +33,16 @@ if (requirement != ""){
 	text.innerHTML = roomArray[roomIndex].text;
 
 	name.innerHTML = localStorage.getItem("playername");
-	gender.innerHTML = localStorage.getItem("playergender");
 	health.innerHTML = "Health: "+ localStorage.getItem("playerhealth");
+
+	switch(localStorage.getItem("playergender")){
+		case "Male":
+			gender.src = "img/male.png"
+			break;
+		case "Female":
+			gender.src = "img/female.png"
+			break;
+	}
 
 	for (var i = 0; i < roomArray[roomIndex].choices.length; i++ ){
 		var tag = "<button type = 'button' onclick = '" + "SelectRoom(" + roomArray[roomIndex].choices[i].index + ")'" + " id = 'b" + (i % 2) + "'>" + roomArray[roomIndex].choices[i].text + "</button>";
