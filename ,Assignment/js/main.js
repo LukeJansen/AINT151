@@ -71,13 +71,30 @@ function SelectRoom(roomIndex)
 
 	function type() {
 		if(i < txt.length){
-			text.innerHTML += txt.charAt(i);
-			i++;
+
+			if (txt.charAt(i) != "<"){
+				text.innerHTML += txt.charAt(i);
+				i++;
+			}
+			else{
+				var file = "";
+				i++
+				while (txt.charAt(i) != ">"){
+					file += txt.charAt(i);
+					i++
+				}
+				console.log(file);
+				var audio = new Audio(file);
+				audio.volume = 1;
+				audio.play();
+				i++
+			}
+
 
 			if (i % 3 == 0){
 				var random = Math.floor(Math.random() * 4 + 1);
 				var audio = new Audio('sound/keyclick' + random + '.wav');
-				audio.volume = 0.5;
+				audio.volume = 0.25;
 				audio.play();
 			}
 
