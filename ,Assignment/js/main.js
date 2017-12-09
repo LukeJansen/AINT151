@@ -1,6 +1,12 @@
 function OnLoad()
 {
-	SelectRoom(0);
+	SelectRoom(localStorage.getItem("roomIndex"));
+}
+
+function Refresh(index){
+	localStorage.setItem("roomIndex", index);
+	localStorage.setItem("item", item);
+	location.reload();
 }
 
 function SelectRoom(roomIndex)
@@ -15,22 +21,27 @@ function SelectRoom(roomIndex)
 	var gender = document.getElementById('characterGender');
 	var health = document.getElementById('characterHealth');
 
-	var item = roomArray[roomIndex].item;
 	var requirement = roomArray[roomIndex].requirement;
 
-if (requirement != ""){
-	if (inventory.includes(requirement)){
-		inventory.pop(requirement);
+	if (localStorage.getItem("item") == ""){
+		item = roomArray[roomIndex].item;
 	} else{
-		alert("You do not have what is required to enter this room!\n" + requirement);
-		SelectRoom(lastRoom);
-		return;
+		item = localStorage.getItem("item");
 	}
-}
+
+	if (requirement != ""){
+		if (item == requirement){
+			item = "";
+		} else{
+			alert("You do not have what is required to enter this room!\n" + requirement);
+			Refresh(lastRoom);
+			return;
+		}
+	}
 	choices.innerHTML = "";
 
 	title.innerHTML = roomArray[roomIndex].title;
-	text.innerHTML = roomArray[roomIndex].text;
+	//text.innerHTML = roomArray[roomIndex].text;
 
 	name.innerHTML = localStorage.getItem("playername");
 	health.innerHTML = "Health: "+ localStorage.getItem("playerhealth");
@@ -45,18 +56,36 @@ if (requirement != ""){
 	}
 
 	for (var i = 0; i < roomArray[roomIndex].choices.length; i++ ){
-		var tag = "<button type = 'button' onclick = '" + "SelectRoom(" + roomArray[roomIndex].choices[i].index + ")'" + " id = 'b" + (i % 2) + "'>" + roomArray[roomIndex].choices[i].text + "</button>";
+		var tag = "<button class = 'button' type = 'button' onclick = '" + "Refresh(" + roomArray[roomIndex].choices[i].index + ")'" + " id = 'b" + (i % 2) + "'>" + roomArray[roomIndex].choices[i].text + "</button>";
 		choices.innerHTML += tag;
 	}
 
-	if (!(inventory.includes(item)) && item != ""){
-	 	inventory.push(item);
+	inv.innerHTML = "<h1>Inventory:</h1>"
+	inv.innerHTML += "<h2>" + item + "</h2><br>"
+
+	var i = 0;
+  var txt = roomArray[roomIndex].text;
+	var speed = 50;
+
+	text.innerHTML = '';
+
+	function type() {
+		if(i < txt.length){
+			text.innerHTML += txt.charAt(i);
+			i++;
+
+			if (i % 3 == 0){
+				var random = Math.floor(Math.random() * 4 + 1);
+				var audio = new Audio('sound/keyclick' + random + '.wav');
+				audio.volume = 0.5;
+				audio.play();
+			}
+
+			setTimeout(type, speed);
+		}
 	}
 
-	inv.innerHTML = "<h1>Inventory:</h1>"
-	for (var i = 0; i < inventory.length; i++){
-		inv.innerHTML += "<h2>" + inventory[i] + "</h2><br>"
-	}
+	type();
 
 	lastRoom = roomIndex;
 }
