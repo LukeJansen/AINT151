@@ -9,4 +9,5 @@ function StorePlayerData()
 	localStorage.setItem("playergender", gender.options[gender.selectedIndex].value);
 	localStorage.setItem("playerhealth", 100);
 	localStorage.setItem("roomIndex", 0);
+	localStorage.setItem("item", "");
 }

@@ -41,7 +41,6 @@ function SelectRoom(roomIndex)
 	choices.innerHTML = "";
 
 	title.innerHTML = roomArray[roomIndex].title;
-	//text.innerHTML = roomArray[roomIndex].text;
 
 	name.innerHTML = localStorage.getItem("playername");
 	health.innerHTML = "Health: "+ localStorage.getItem("playerhealth");
@@ -65,7 +64,7 @@ function SelectRoom(roomIndex)
 
 	var i = 0;
   var txt = roomArray[roomIndex].text;
-	var speed = 50;
+	var delay = 25;
 
 	text.innerHTML = '';
 
@@ -74,31 +73,32 @@ function SelectRoom(roomIndex)
 
 			if (txt.charAt(i) != "<"){
 				text.innerHTML += txt.charAt(i);
-				i++;
+				//i++;
 			}
 			else{
 				var file = "";
-				i++
+				//i++
 				while (txt.charAt(i) != ">"){
 					file += txt.charAt(i);
-					i++
+					//i++
 				}
 				console.log(file);
 				var audio = new Audio(file);
 				audio.volume = 1;
 				audio.play();
-				i++
+				//i++
 			}
 
+			i++
 
-			if (i % 3 == 0){
+			if (i % 6 == 0){
 				var random = Math.floor(Math.random() * 4 + 1);
 				var audio = new Audio('sound/keyclick' + random + '.wav');
-				audio.volume = 0.25;
+				audio.volume = 0.1;
 				audio.play();
 			}
 
-			setTimeout(type, speed);
+			setTimeout(type, delay);
 		}
 	}
 
