@@ -64,34 +64,51 @@ function SelectRoom(roomIndex)
 
 	var i = 0;
   var txt = roomArray[roomIndex].text;
-	var delay = 25;
+	var delay = 40;
 
 	text.innerHTML = '';
 
 	function type() {
 		if(i < txt.length){
 
-			if (txt.charAt(i) != "<"){
+			if(txt.charAt(i) == "<"){
+				var tag = "";
+				while (txt.charAt(i) != ">"){
+					tag += txt.charAt(i);
+					i++;
+				}
+				tag += ">";
+				console.log(tag);
+				text.innerHTML += tag;
+				i ++;
+			}
+			else if (txt.charAt(i) == "#"){
+				var insert = localStorage.getItem("playername");
+				console.log(insert.length)
+				for(var j = 0; j < insert.length; j++){
+					text.innerHTML += insert.charAt(j);
+				}
+				i++;
+			}
+			else if (txt.charAt(i) != "["){
 				text.innerHTML += txt.charAt(i);
-				//i++;
+				i++;
 			}
 			else{
 				var file = "";
-				//i++
-				while (txt.charAt(i) != ">"){
+				i++
+				while (txt.charAt(i) != "]"){
 					file += txt.charAt(i);
-					//i++
+					i++
 				}
 				console.log(file);
 				var audio = new Audio(file);
 				audio.volume = 1;
 				audio.play();
-				//i++
+				i++
 			}
 
-			i++
-
-			if (i % 6 == 0){
+			if (i % 4 == 0){
 				var random = Math.floor(Math.random() * 4 + 1);
 				var audio = new Audio('sound/keyclick' + random + '.wav');
 				audio.volume = 0.1;
