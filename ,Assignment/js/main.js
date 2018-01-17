@@ -54,9 +54,25 @@ function SelectRoom(roomIndex)
 			break;
 	}
 
+	if(roomIndex == 26){
+		roomArray[26].choices[0].index = localStorage.getItem("choice");
+	}
+
 	for (var i = 0; i < roomArray[roomIndex].choices.length; i++ ){
-		var tag = "<button class = 'button' type = 'button' onclick = '" + "Refresh(" + roomArray[roomIndex].choices[i].index + ")'" + " id = 'b" + (i % 2) + "'>" + roomArray[roomIndex].choices[i].text + "</button>";
+		var buttonid = "bc";
+		console.log(roomArray[roomIndex].choices.length);
+		if (roomArray[roomIndex].choices.length > 1){
+			console.log(roomChoices.clientWidth);
+			if (roomChoices.clientWidth < 325){
+				buttonid = "bc";
+			} else {
+				buttonid = "b" + (i % 2);
+			}
+		}
+		console.log(buttonid);
+		var tag = "<button class = 'button' type = 'button' onclick = '" + "Refresh(" + roomArray[roomIndex].choices[i].index + ")'" + " id = " + buttonid + ">" + roomArray[roomIndex].choices[i].text + "</button>";
 		choices.innerHTML += tag;
+		//$(".button").hide();
 	}
 
 	inv.innerHTML = "<h1>Inventory:</h1>"
@@ -95,7 +111,7 @@ function SelectRoom(roomIndex)
 				i++;
 			}
 			else{
-				var file = "";
+				var file = "sound/";
 				i++
 				while (txt.charAt(i) != "]"){
 					file += txt.charAt(i);
@@ -116,10 +132,20 @@ function SelectRoom(roomIndex)
 			}
 
 			setTimeout(type, delay);
+		} else{
+			$(".button").addClass('animated fadeOut');
 		}
 	}
 
 	type();
+
+	if(roomIndex == 24){
+			console.log("bob");
+			localStorage.setItem("choice", 27);
+	}
+	else if (roomIndex == 25){
+			localStorage.setItem("choice", 28);
+	}
 
 	lastRoom = roomIndex;
 }
