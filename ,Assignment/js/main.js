@@ -1,6 +1,14 @@
+typing = false;
+
 function OnLoad()
 {
-	SelectRoom(localStorage.getItem("roomIndex"));
+	var x = document.getElementById("myModal");
+	x.style.display = "none";
+	if (checkOrientation()){
+		SelectRoom(localStorage.getItem("roomIndex"));
+	} else{
+		x.style.display = "block";
+	}
 }
 
 function Refresh(index){
@@ -9,143 +17,156 @@ function Refresh(index){
 	location.reload();
 }
 
-function SelectRoom(roomIndex)
-{
-	var title = document.getElementById('roomTitle');
-	var text = document.getElementById('roomText');
-	var choices = document.getElementById('roomChoices');
-
-	var inv = document.getElementById('inventory');
-
-	var name = document.getElementById('characterName');
-	var gender = document.getElementById('characterGender');
-	var health = document.getElementById('characterHealth');
-
-	var requirement = roomArray[roomIndex].requirement;
-
-	if (localStorage.getItem("item") == ""){
-		item = roomArray[roomIndex].item;
+function checkOrientation(){
+	console.log(window.innerHeight);
+	if (window.innerHeight > window.innerWidth){
+		return false;
 	} else{
-		item = localStorage.getItem("item");
+		return true;
 	}
+}
 
-	if (requirement != ""){
-		if (item == requirement){
-			item = "";
+function SelectRoom(roomIndex){
+		var title = document.getElementById('roomTitle');
+		var text = document.getElementById('roomText');
+		var choices = document.getElementById('roomChoices');
+
+		var inv = document.getElementById('inventory');
+
+		var name = document.getElementById('characterName');
+		var gender = document.getElementById('characterGender');
+		var health = document.getElementById('characterHealth');
+
+		var requirement = roomArray[roomIndex].requirement;
+
+		if (localStorage.getItem("item") == ""){
+			item = roomArray[roomIndex].item;
 		} else{
-			alert("You do not have what is required to enter this room!\n" + requirement);
-			Refresh(lastRoom);
-			return;
+			item = localStorage.getItem("item");
 		}
-	}
-	choices.innerHTML = "";
 
-	title.innerHTML = roomArray[roomIndex].title;
-
-	name.innerHTML = localStorage.getItem("playername");
-	health.innerHTML = "Health: "+ localStorage.getItem("playerhealth");
-
-	switch(localStorage.getItem("playergender")){
-		case "Male":
-			gender.src = "img/male.png"
-			break;
-		case "Female":
-			gender.src = "img/female.png"
-			break;
-	}
-
-	if(roomIndex == 26){
-		roomArray[26].choices[0].index = localStorage.getItem("choice");
-	}
-
-	for (var i = 0; i < roomArray[roomIndex].choices.length; i++ ){
-		var buttonid = "bc";
-		console.log(roomArray[roomIndex].choices.length);
-		if (roomArray[roomIndex].choices.length > 1){
-			console.log(roomChoices.clientWidth);
-			if (roomChoices.clientWidth < 325){
-				buttonid = "bc";
-			} else {
-				buttonid = "b" + (i % 2);
+		if (requirement != ""){
+			if (item == requirement){
+				item = "";
+			} else{
+				alert("You do not have what is required to enter this room!\n" + requirement);
+				Refresh(lastRoom);
+				return;
 			}
 		}
-		console.log(buttonid);
-		var tag = "<button class = 'button' type = 'button' onclick = '" + "Refresh(" + roomArray[roomIndex].choices[i].index + ")'" + " id = " + buttonid + ">" + roomArray[roomIndex].choices[i].text + "</button>";
-		choices.innerHTML += tag;
-		//$(".button").hide();
-	}
+		choices.innerHTML = "";
 
-	inv.innerHTML = "<h1>Inventory:</h1>"
-	inv.innerHTML += "<h2>" + item + "</h2><br>"
+		title.innerHTML = roomArray[roomIndex].title;
 
-	var i = 0;
-  var txt = roomArray[roomIndex].text;
-	var delay = 40;
+		name.innerHTML = localStorage.getItem("playername");
+		health.innerHTML = "Health: "+ localStorage.getItem("playerhealth");
 
-	text.innerHTML = '';
+		switch(localStorage.getItem("playergender")){
+			case "Male":
+				gender.src = "img/male.png"
+				break;
+			case "Female":
+				gender.src = "img/female.png"
+				break;
+		}
 
-	function type() {
-		if(i < txt.length){
+		if(roomIndex == 26){
+			roomArray[26].choices[0].index = localStorage.getItem("choice");
+		}
 
-			if(txt.charAt(i) == "<"){
-				var tag = "";
-				while (txt.charAt(i) != ">"){
-					tag += txt.charAt(i);
+		for (var i = 0; i < roomArray[roomIndex].choices.length; i++ ){
+			var buttonid = "bc";
+			if (roomArray[roomIndex].choices.length > 1){
+				if (roomChoices.clientWidth < 325){
+					buttonid = "bc";
+				} else {
+					buttonid = "b" + (i % 2);
+				}
+			}
+			var tag = "<button class = 'button' type = 'button' onclick = '" + "Refresh(" + roomArray[roomIndex].choices[i].index + ")'" + " id = " + buttonid + ">" + roomArray[roomIndex].choices[i].text + "</button>";
+			choices.innerHTML += tag;
+			//$(".button").hide();
+		}
+
+		inv.innerHTML = "<h1>Inventory:</h1>"
+		inv.innerHTML += "<h2>" + item + "</h2><br>"
+
+		var i = 0;
+	  var txt = roomArray[roomIndex].text;
+		var delay = 40;
+
+		text.innerHTML = '';
+
+		function type() {
+
+			typing = true;
+			if(i < txt.length){
+
+				if(txt.charAt(i) == "<"){
+					var tag = "";
+					while (txt.charAt(i) != ">"){
+						tag += txt.charAt(i);
+						i++;
+					}
+					tag += ">";
+					text.innerHTML += tag;
+					i ++;
+				}
+				else if (txt.charAt(i) == "#"){
+					var insert = localStorage.getItem("playername");
+					for(var j = 0; j < insert.length; j++){
+						text.innerHTML += insert.charAt(j);
+					}
 					i++;
 				}
-				tag += ">";
-				console.log(tag);
-				text.innerHTML += tag;
-				i ++;
-			}
-			else if (txt.charAt(i) == "#"){
-				var insert = localStorage.getItem("playername");
-				console.log(insert.length)
-				for(var j = 0; j < insert.length; j++){
-					text.innerHTML += insert.charAt(j);
+				else if (txt.charAt(i) != "["){
+					text.innerHTML += txt.charAt(i);
+					i++;
 				}
-				i++;
-			}
-			else if (txt.charAt(i) != "["){
-				text.innerHTML += txt.charAt(i);
-				i++;
-			}
-			else{
-				var file = "sound/";
-				i++
-				while (txt.charAt(i) != "]"){
-					file += txt.charAt(i);
+				else{
+					var file = "sound/";
+					i++
+					while (txt.charAt(i) != "]"){
+						file += txt.charAt(i);
+						i++
+					}
+					var audio = new Audio(file);
+					audio.volume = 1;
+					audio.play();
 					i++
 				}
-				console.log(file);
-				var audio = new Audio(file);
-				audio.volume = 1;
-				audio.play();
-				i++
-			}
 
-			if (i % 4 == 0){
-				var random = Math.floor(Math.random() * 4 + 1);
-				var audio = new Audio('sound/keyclick' + random + '.wav');
-				audio.volume = 0.1;
-				audio.play();
-			}
+				if (i % 4 == 0){
+					var random = Math.floor(Math.random() * 4 + 1);
+					var audio = new Audio('sound/keyclick' + random + '.wav');
+					audio.volume = 0.1;
+					audio.play();
+				}
 
-			setTimeout(type, delay);
-		} else{
-			$(".button").addClass('animated fadeOut');
+				setTimeout(type, delay);
+			} else{
+				typing = false;
+			}
 		}
+
+		type();
+
+		if(roomIndex == 24){
+				localStorage.setItem("choice", 27);
+		}
+		else if (roomIndex == 25){
+				localStorage.setItem("choice", 28);
+		}
+
+		lastRoom = roomIndex;
 	}
 
-	type();
 
-	if(roomIndex == 24){
-			console.log("bob");
-			localStorage.setItem("choice", 27);
-	}
-	else if (roomIndex == 25){
-			localStorage.setItem("choice", 28);
-	}
 
-	lastRoom = roomIndex;
+window.onresize = function(event){
+	if (typing){
+		Refresh(localStorage.getItem("roomIndex"));
+	} else{
+		OnLoad();
+	}
 }
